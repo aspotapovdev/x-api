@@ -9,6 +9,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
   },
+  ignorePatterns: ['node_modules/', 'init-mongo'],
   rules: {
     'prettier/prettier': 'error',
     'newline-before-return': 'error',
