@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  partners-api:
+    image: partners-api:prod
+    container_name: partners-api
+    build: ./
+    ports:
+      - '${PORT}:3000'
+    networks:
+      - partners
+    depends_on:
+      - partners-database
+  partners-client:
+    image: partners-client:prod
+    container_name: partners-client
+    build:
+      context: ../partners-client
+    ports:
+      - '127.0.0.1:${CLIENT_PORT}:80'
+    networks:
+      - partners
+    depends_on:
+      - partners-api
+    restart: always
+  partners-database:
+    image: mongo:latest
+    container_name: partners-database
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_DB}
+    networks:
+      - partners
+    ports:
+      - '127.0.0.1:${MONGO_PORT}:5432'
+    volumes:
+      - mongodb_data:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+
+volumes:
+  mongodb_data:
+networks:
+  partners: {}
