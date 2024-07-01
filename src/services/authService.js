@@ -40,6 +40,25 @@ class AuthService {
 
     return user.toDTO();
   }
+
+  async login(email, password) {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return null;
+    }
+
+    const isPasswordValid = await PasswordUtils.comparePasswords(
+      password,
+      user.password,
+    );
+
+    if (!isPasswordValid) {
+      return null;
+    }
+
+    return user.toDTO();
+  }
 }
 
 module.exports = new AuthService();
