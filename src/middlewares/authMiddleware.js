@@ -1,4 +1,4 @@
-const JWTUtils = require('../utils/JWTUtils');
+const JWTUtils = require('../utils/jwtUtils');
 const UserService = require('../services/userService');
 
 const authMiddleware = async (req, res, next) => {

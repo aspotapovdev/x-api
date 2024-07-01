@@ -3,7 +3,7 @@ const { registerValidator } = require('../validators/authValidators');
 const AuthService = require('../services/authService');
 const EmailService = require('../services/emailService');
 const FileUploadService = require('../services/fileUploadService');
-const JWTUtils = require('../utils/JWTUtils');
+const JWTUtils = require('../utils/jwtUtils');
 
 const register = async (req, res, next) => {
   try {
