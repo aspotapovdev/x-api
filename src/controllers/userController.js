@@ -40,8 +40,20 @@ const updateUser = async (req, res, next) => {
   }
 };
 
+const getAllUsers = async (req, res, next) => {
+  try {
+    const users = await UserService.getAllUsers(req.user.id);
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error caught in getAllUsers controller:', error);
+    next(error);
+  }
+};
+
 module.exports = {
   getMe,
   changePassword,
   updateUser,
+  getAllUsers,
 };
