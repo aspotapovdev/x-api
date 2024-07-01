@@ -1,4 +1,4 @@
-const PasswordUtils = require('../utils/PasswordUtils');
+const PasswordUtils = require('../utils/passwordUtils');
 const User = require('../models/User');
 
 class AuthService {
