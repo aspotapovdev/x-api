@@ -1,4 +1,5 @@
 const UserService = require('../services/userService');
+const FileUploadService = require('../services/fileUploadService');
 
 const getMe = async (req, res) => {
   res.status(200).json({
@@ -21,7 +22,26 @@ const changePassword = async (req, res, next) => {
   }
 };
 
+const updateUser = async (req, res, next) => {
+  try {
+    const filePath = await FileUploadService.uploadFile(req, res);
+
+    const userData = req.body;
+    if (filePath) {
+      userData.avatar = filePath;
+    }
+
+    const updatedUser = await UserService.updateUser(req.user.id, userData);
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error('Error caught in updateUser controller:', error);
+    next(error);
+  }
+};
+
 module.exports = {
   getMe,
   changePassword,
+  updateUser,
 };
