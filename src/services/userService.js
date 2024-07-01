@@ -62,6 +62,30 @@ class UserService {
       throw error;
     }
   }
+
+  async getAllUsers(currentUserId) {
+    try {
+      const usersDto = [];
+
+      return new Promise((resolve, reject) => {
+        User.find({ _id: { $ne: currentUserId } })
+          .cursor()
+          .on('data', (user) => {
+            usersDto.push(user.toDTO());
+          })
+          .on('error', (error) => {
+            console.error('Error caught in getAllUsers service:', error);
+            reject(error);
+          })
+          .on('end', () => {
+            resolve(usersDto);
+          });
+      });
+    } catch (error) {
+      console.error('Error caught in getAllUsers service:', error);
+      throw error;
+    }
+  }
 }
 
 module.exports = new UserService();
