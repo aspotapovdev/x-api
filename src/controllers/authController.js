@@ -72,7 +72,37 @@ const verifyEmail = async (req, res, next) => {
   }
 };
 
+const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const userDTO = await AuthService.login(email, password);
+
+    if (!userDTO) {
+      const error = new Error('Неверный email или пароль');
+      error.statusCode = 401;
+      throw error;
+    }
+
+    if (!userDTO.isVerified) {
+      const error = new Error('Email не подтвержден');
+      error.statusCode = 401;
+      throw error;
+    }
+
+    const token = JWTUtils.generateToken({ userId: userDTO.id });
+    res.status(200).json({
+      message: 'Login successful',
+      token,
+      user: userDTO,
+    });
+  } catch (error) {
+    console.error('Error caught in login controller:', error);
+    next(error);
+  }
+};
+
 module.exports = {
   register,
   verifyEmail,
+  login,
 };
