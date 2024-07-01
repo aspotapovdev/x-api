@@ -4,7 +4,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 class JWTUtils {
   static generateToken(payload) {
-    return jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
+    return jwt.sign(payload, JWT_SECRET);
   }
 
   static verifyToken(token) {

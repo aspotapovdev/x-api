@@ -42,6 +42,26 @@ class UserService {
       throw error;
     }
   }
+
+  async updateUser(id, userData) {
+    try {
+      const user = await User.findById(id);
+
+      if (!user) {
+        const error = new Error('User not found');
+        error.statusCode = 404;
+        throw error;
+      }
+
+      Object.assign(user, userData);
+      await user.save();
+
+      return user.toDTO();
+    } catch (error) {
+      console.error('Error caught in updateUser service:', error);
+      throw error;
+    }
+  }
 }
 
 module.exports = new UserService();

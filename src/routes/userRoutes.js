@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.get('/me', authMiddleware, userController.getMe);
 router.post('/change-password', authMiddleware, userController.changePassword);
+router.put('/update', authMiddleware, userController.updateUser);
 
 module.exports = router;
